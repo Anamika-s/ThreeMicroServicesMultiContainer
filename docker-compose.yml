@@ -1,0 +1,85 @@
+version: '3.4'
+networks:
+  backend: 
+  
+services:
+  productdb:
+    container_name: product-db
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=S3cur3P@ssW0rd! 
+    networks:
+      - backend
+    ports:
+      - 8003:1433
+
+  productapi:
+    
+    container_name: product-api
+    image: ${DOCKER_REGISTRY-}productapi
+    build:
+      context: .
+      dockerfile: ProductApi/Dockerfile
+    networks:
+      - backend
+    ports:
+      - 8004:80
+    volumes:
+      - "./data:/var/opt/mssql"
+    environment:
+      - DB_HOST=productdb
+      - DB_NAME=productdb
+      - DB_MSSQL_SA_PASSWORD=S3cur3P@ssW0rd! 
+
+  customerdb:
+    container_name: customer-db
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=Password@123456 
+    networks:
+      - backend
+    ports:
+      - 8007:1433
+
+  customerapi:
+    
+    container_name: customer-api
+    image: ${DOCKER_REGISTRY-}customerapi
+    build:
+      context: .
+      dockerfile: CustomerApi/Dockerfile
+    networks:
+      - backend
+    ports:
+      - 8008:80
+    volumes:
+      - "./data:/var/opt/mssql"
+    environment:
+      - DB_HOST=customerdb
+      - DB_NAME=customer_db
+      - DB_MSSQL_SA_PASSWORD=Password@123456 
+  
+  orderdb:
+    container_name: order_db
+    image: mongo
+    ports:
+      - 18005:27017
+    networks:
+      - backend
+     
+  orderapi:
+    container_name: orderapi
+    image: ${DOCKER_REGISTRY-}orderapi
+    build:
+      context: .
+      dockerfile: OrderApi/Dockerfile
+    networks:
+      - backend
+    ports:
+      - 18008:80
+    environment:
+      - DB_HOST=orderdb
+      - DB_NAME=orderDb
+    
