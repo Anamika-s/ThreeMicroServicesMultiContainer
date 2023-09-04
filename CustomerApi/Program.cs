@@ -1,7 +1,9 @@
+using Confluent.Kafka;
 using CustomerApi.DAL;
 using CustomerApi.Service;
 using CustomertApi.Context;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CustomerApi
 {
@@ -17,6 +19,9 @@ namespace CustomerApi
 
             builder.Services.AddScoped<CustomerService>();
             builder.Services.AddScoped<ICustomerRepo, CustomerRepo>();
+
+          
+
             //var dbHost = Environment.GetEnvironmentVariable("DB_HOST");
 
             //var dbName = Environment.GetEnvironmentVariable("DB_NAME");
@@ -31,6 +36,11 @@ namespace CustomerApi
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            //var consumerConfig = new ConsumerConfig();
+            //builder.Configuration.Bind("consumer", consumerConfig);
+            //builder.Services.AddSingleton<ConsumerConfig>(consumerConfig);
+            builder.Services.AddSingleton
+    <IHostedService, ApacheKafkaConsumerService>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -44,16 +54,16 @@ namespace CustomerApi
 
 
             app.MapControllers();
-            using (var scope = app.Services.CreateScope())
-            {
-                var services = scope.ServiceProvider;
+            //using (var scope = app.Services.CreateScope())
+            //{
+            //    var services = scope.ServiceProvider;
 
-                var context = services.GetRequiredService<CustomerDbContext>();
-                if (context.Database.GetPendingMigrations().Any())
-                {
-                    context.Database.Migrate();
-                }
-            }
+            //    var context = services.GetRequiredService<CustomerDbContext>();
+            //    if (context.Database.GetPendingMigrations().Any())
+            //    {
+            //        context.Database.Migrate();
+            //    }
+            //}
             app.Run();
         }
     }

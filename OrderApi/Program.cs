@@ -1,3 +1,5 @@
+using Confluent.Kafka;
+
 namespace OrderApi
 {
     public class Program
@@ -12,6 +14,9 @@ namespace OrderApi
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            var producerConfig = new ProducerConfig();
+            builder.Configuration.Bind("producer", producerConfig);
+            builder.Services.AddSingleton<ProducerConfig>(producerConfig);
 
             var app = builder.Build();
 

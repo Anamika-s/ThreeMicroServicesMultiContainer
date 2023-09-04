@@ -60,6 +60,7 @@ services:
       - DB_HOST=customerdb
       - DB_NAME=customer_db
       - DB_MSSQL_SA_PASSWORD=Password@123456 
+
   
   orderdb:
     container_name: order_db

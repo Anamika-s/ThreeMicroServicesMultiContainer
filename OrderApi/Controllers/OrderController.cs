@@ -11,10 +11,10 @@ namespace OrderApi.Controllers
     {
         private readonly IMongoCollection<Order> orders;
         public OrderController() {
-            //var dbHost = "localhost";
-            //var dbName = "orderDb";
-            var dbHost = Environment.GetEnvironmentVariable("DB_HOST");
-            var dbName = Environment.GetEnvironmentVariable("DB_NAME");
+            var dbHost = "localhost";
+            var dbName = "orderDb";
+            //var dbHost = Environment.GetEnvironmentVariable("DB_HOST");
+            //var dbName = Environment.GetEnvironmentVariable("DB_NAME");
             var connectionString = $"mongodb://{dbHost}:27017/{dbName}";
             var mongoUrl = MongoUrl.Create(connectionString);
             var mongoClient = new MongoClient(mongoUrl);

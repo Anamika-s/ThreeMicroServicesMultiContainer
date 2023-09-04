@@ -26,8 +26,8 @@ namespace ProductApi
             var dbName = Environment.GetEnvironmentVariable("DB_NAME");
             var dbPassword = Environment.GetEnvironmentVariable("DB_MSSQL_SA_PASSWORD");
             var connectiontString = $"server={dbHost};database={dbName};user id=sa;password={dbPassword};TrustServerCertificate=True";
-            //builder.Services.AddDbContext<ProductDbContext>(op => op.UseSqlServer(builder.Configuration["ConnectionStrings:MyC"]));
-            builder.Services.AddDbContext<ProductDbContext>(op => op.UseSqlServer(connectiontString));
+            builder.Services.AddDbContext<ProductDbContext>(op => op.UseSqlServer(builder.Configuration["ConnectionStrings:MyC"]));
+            //builder.Services.AddDbContext<ProductDbContext>(op => op.UseSqlServer(connectiontString));
 
             var app = builder.Build();
 

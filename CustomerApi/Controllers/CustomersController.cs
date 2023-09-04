@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
  using CustomerApi.Service;
+using CustomerApi;
 
 namespace ProductApi.Controllers
 {
@@ -10,16 +11,19 @@ namespace ProductApi.Controllers
     public class CustomersController : ControllerBase
     {
         private readonly CustomerService _service;
+        //private readonly ApacheKafkaConsumerService _s;
         public CustomersController(CustomerService service)
 
         {
             _service = service;
-
+            
+             
         }
 
         [HttpGet]
         public IActionResult Get()
         {
+            //_s.StartAsync();
             return Ok(_service.GetCustomers());
         }
         [HttpGet("{id}")]
